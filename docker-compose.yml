@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  fury:
+    container_name: fury_node
+    image: furychain/foundation-fury:0.41.2-alpine-dev
+    working_dir: /workspace
+    tty: true
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - 3317:1317
+      - 36656:26656
+      - 36657:26657
+      - 3090:9090
+    cap_add:
+      - SYS_PTRACE
+    env_file:
+      - fury.dev.env
+    volumes:
+      - ./:/workspace
+      - furyvisor:/root/furyvisor
+
+  proto:
+    image: cosmwasm/prototools-docker
+    tty: true
+    volumes:
+      - ./:/work
+volumes:
+  furyvisor: null
